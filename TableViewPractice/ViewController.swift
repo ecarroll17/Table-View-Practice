@@ -1,25 +1,32 @@
-//
-//  ViewController.swift
-//  TableViewPractice
-//
-//  Created by ecarroll on 1/13/16.
-//  Copyright © 2016 ecarroll. All rights reserved.
-//
-
 import UIKit
-
-class ViewController: UIViewController {
-
-    override func viewDidLoad() {
+//add data source and delegate protocols
+class ViewController: UIViewController, UITableViewDataSource, UITableViewDelegate
+{
+    @IBOutlet weak var myTableView: UITableView!
+    
+    var superheros = ["Batman", "Wonder Woman", "Superman", "Flash", "Aquaman", "Scuba Steve"]
+    var realNames = ["Bruce Wayne", "Diana", "Clark Kent", "Barry Allen", "Arthur Curry", "Steve"]
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        //setting the datasource and delegate
+        myTableView.dataSource = self
+        myTableView.delegate = self
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    //creating a cell that will store the data
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
+    {
+        let myTableViewCell = myTableView.dequeueReusableCellWithIdentifier("myCell", forIndexPath: indexPath)
+        myTableViewCell.textLabel?.text = superheros[indexPath.row]
+        myTableViewCell.detailTextLabel?.text = realNames[indexPath.row]
+        return myTableViewCell
     }
-
-
+    //sets the number of rows in the tableview
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return superheros.count
+    }
 }
 
