@@ -14,6 +14,38 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         myTableView.dataSource = self
         myTableView.delegate = self
     }
+   
+    @IBAction func addButtonTapped(sender: UIBarButtonItem)
+    {
+        let myAlert = UIAlertController(title: "Add Superhero", message: nil, preferredStyle: .Alert)
+        
+        //cancels action
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Cancel, handler: nil)
+        myAlert.addAction(cancelAction)
+        
+        //adds superheros and realnames to table view
+        let addAction = UIAlertAction(title: "Add", style: .Default) { (addAction) -> Void in
+            let superheroNameTextField = myAlert.textFields![0] as UITextField
+            let aliasTextField = myAlert.textFields![0] as UITextField
+            self.superheros.append(superheroNameTextField.text!)
+            self.realNames.append(aliasTextField.text!)
+            self.myTableView.reloadData()
+        }
+        
+        myAlert.addAction(addAction)
+        
+        myAlert.addTextFieldWithConfigurationHandler { (superheroTextField) -> Void in
+            superheroTextField.placeholder = "Add Superhero Name"
+        }
+        myAlert.addTextFieldWithConfigurationHandler { (aliasTextField) -> Void in
+            aliasTextField.placeholder = "Add Real Name"
+        }
+        
+        //presents alert
+        self.presentViewController(myAlert, animated: true, completion: nil)
+        
+        
+    }
     
     //creating a cell that will store the data
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell
@@ -23,10 +55,22 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         myTableViewCell.detailTextLabel?.text = realNames[indexPath.row]
         return myTableViewCell
     }
+    
     //sets the number of rows in the tableview
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         return superheros.count
+    }
+    
+    //allows you to delete rows from the tableview
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath)
+    {
+        if editingStyle == .Delete
+        {
+            superheros.removeAtIndex(indexPath.row)
+            realNames.removeAtIndex(indexPath.row)
+            myTableView.reloadData()
+        }
     }
 }
 
